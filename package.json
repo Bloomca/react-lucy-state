@@ -1,0 +1,41 @@
+{
+  "name": "react-lucy-state",
+  "version": "0.0.1",
+  "description": "More performant replacement for React.useState",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Bloomca/react-lucy-state.git"
+  },
+  "keywords": [
+    "react",
+    "react",
+    "state",
+    "performance"
+  ],
+  "author": "Seva Zaikov <mail@bloomca.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bloomca/react-lucy-state/issues"
+  },
+  "homepage": "https://github.com/Bloomca/react-lucy-state#readme",
+  "devDependencies": {
+    "tsup": "^8.2.4"
+  },
+  "peerDependencies": {
+    "@types/react": ">=18",
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "react": {
+      "optional": false
+    }
+  }
+}

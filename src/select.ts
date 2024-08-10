@@ -2,10 +2,7 @@ import { useCreateLucyState } from "./use-create-lucy-state";
 
 type State<StateType> = ReturnType<typeof useCreateLucyState<StateType>>;
 
-function selectState<F, T>(
-  state: State<F>,
-  selector: (state: F) => T
-): State<T> {
+function useSelect<F, T>(state: State<F>, selector: (state: F) => T): State<T> {
   const initialValue = selector(state.getValue());
 
   const newState = useCreateLucyState(initialValue);
@@ -20,4 +17,4 @@ function selectState<F, T>(
   return newState;
 }
 
-export { selectState };
+export { useSelect };

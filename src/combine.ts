@@ -2,29 +2,29 @@ import { useCreateLucyState } from "./use-create-lucy-state";
 
 type createdState<StateType> = ReturnType<typeof useCreateLucyState<StateType>>;
 
-export function combine<A, B>(
+export function useCombine<A, B>(
   state1: createdState<A>,
   state2: createdState<B>
 ): createdState<[A, B]>;
-export function combine<A, B, C>(
+export function useCombine<A, B, C>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>
 ): createdState<[A, B, C]>;
-export function combine<A, B, C, D>(
+export function useCombine<A, B, C, D>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>,
   state4: createdState<D>
 ): createdState<[A, B, C, D]>;
-export function combine<A, B, C, D, E>(
+export function useCombine<A, B, C, D, E>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>,
   state4: createdState<D>,
   state5: createdState<E>
 ): createdState<[A, B, C, D, E]>;
-export function combine<A, B, C, D, E, F>(
+export function useCombine<A, B, C, D, E, F>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>,
@@ -32,7 +32,7 @@ export function combine<A, B, C, D, E, F>(
   state5: createdState<E>,
   state6: createdState<F>
 ): createdState<[A, B, C, D, E, F]>;
-export function combine<A, B, C, D, E, F, G>(
+export function useCombine<A, B, C, D, E, F, G>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>,
@@ -41,7 +41,7 @@ export function combine<A, B, C, D, E, F, G>(
   state6: createdState<F>,
   state7: createdState<G>
 ): createdState<[A, B, C, D, E, F, G]>;
-export function combine<A, B, C, D, E, F, G, H>(
+export function useCombine<A, B, C, D, E, F, G, H>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>,
@@ -51,7 +51,7 @@ export function combine<A, B, C, D, E, F, G, H>(
   state7: createdState<G>,
   state8: createdState<H>
 ): createdState<[A, B, C, D, E, F, G, H]>;
-export function combine<A, B, C, D, E, F, G, H, I>(
+export function useCombine<A, B, C, D, E, F, G, H, I>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>,
@@ -62,7 +62,7 @@ export function combine<A, B, C, D, E, F, G, H, I>(
   state8: createdState<H>,
   state9: createdState<I>
 ): createdState<[A, B, C, D, E, F, G, H, I]>;
-export function combine<A, B, C, D, E, F, G, H, I, J>(
+export function useCombine<A, B, C, D, E, F, G, H, I, J>(
   state1: createdState<A>,
   state2: createdState<B>,
   state3: createdState<C>,
@@ -74,7 +74,7 @@ export function combine<A, B, C, D, E, F, G, H, I, J>(
   state9: createdState<I>,
   state10: createdState<J>
 ): createdState<[A, B, C, D, E, F, G, H, I, J]>;
-export function combine(...states) {
+export function useCombine(...states) {
   const initialValue = states.map((state) => state.getValue());
   const combinedState = useCreateLucyState(initialValue);
 

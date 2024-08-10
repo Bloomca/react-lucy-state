@@ -1,11 +1,68 @@
-import React, { useState, createElement, useEffect, useRef } from "react";
+import React, { useState, createElement, useEffect, useRef, memo } from "react";
 
 const noValueSymbol = Symbol("no value");
+
+type LucyState<T> = {
+  getValue: () => T;
+  setValue: (newValue: T) => void;
+  Value: <F = T>({
+    selector,
+    children,
+  }: {
+    selector?: (value: T) => F;
+    children: (value: F) => React.ReactNode;
+  }) => React.ReactNode;
+  renderValue: (
+    cb: (value: T) => React.ReactNode,
+    props?: Record<string, any>
+  ) => React.FunctionComponentElement<{
+    selector?: (value: T) => unknown;
+    children: (value: unknown) => React.ReactNode;
+  }>;
+  renderValueSelector<F>(
+    selector: (value: T) => F,
+    cb: (value: F) => React.ReactNode,
+    props?: Record<string, any>
+  ): React.FunctionComponentElement<{
+    selector?: (value: T) => unknown;
+    children: (value: unknown) => React.ReactNode;
+  }>;
+  useTrackValue: (
+    cb: (value: T) => void | Function,
+    options: {
+      skipFirstCall?: boolean;
+      comparator?: (a: T, b: T) => boolean;
+    }
+  ) => void;
+  useTrackValueSelector<F>(
+    selector: (value: T) => F,
+    cb: (value: F) => void | Function,
+    options?: {
+      skipFirstCall?: boolean;
+      comparator?: (a: F, b: F) => boolean;
+    }
+  ): void;
+  IteratingComponent<F>({
+    item,
+    index,
+    children,
+  }: {
+    item: F;
+    index: number;
+    children: ({
+      itemState,
+      indexState,
+    }: {
+      itemState: LucyState<F>;
+      indexState: LucyState<number>;
+    }) => React.ReactNode;
+  }): React.ReactElement;
+};
 
 export function useCreateLucyState<T>(
   initialValue: T,
   comparator?: (a: T, b: T) => boolean
-) {
+): LucyState<T> {
   let value = initialValue;
   let subscriptions: Function[] = [];
 
@@ -158,5 +215,67 @@ export function useCreateLucyState<T>(
     ) {
       useTrackValue<F>(selector, cb, options);
     },
+    /**
+     * this is actually a potentially really powerful abstraction
+     * but since we can't use hooks conditionally, to abstract it,
+     * we'd need to use only `item`.
+     * 
+     * In theory that could work, pass an object as item, do a shallow
+     * comparison by default, and inside a component do `useSelect` for
+     * each property we are interested in.
+     */
+    IteratingComponent<F>({
+      item,
+      index,
+      children,
+    }: {
+      item: F;
+      index: number;
+      children: ({
+        itemState,
+        indexState,
+      }: {
+        itemState: LucyState<F>;
+        indexState: LucyState<number>;
+      }) => React.ReactNode;
+    }) {
+      const itemState = useConvertToLucyState(item);
+      const indexState = useConvertToLucyState(index);
+
+      useEffect(() => {
+        itemState.setValue(item);
+      }, [item]);
+      useEffect(() => {
+        indexState.setValue(index);
+      }, [index]);
+
+      function InternalIteratingComponent({}: {
+        itemState: LucyState<F>;
+        indexState: LucyState<number>;
+      }) {
+        return children({ itemState, indexState });
+      }
+
+      // never re-render the memoized component
+      const MemoizedIteratingComponent = memo(
+        InternalIteratingComponent,
+        () => true
+      );
+
+      return createElement(MemoizedIteratingComponent, {
+        itemState,
+        indexState,
+      });
+    },
   };
+}
+
+export function useConvertToLucyState<T>(property: T) {
+  const state = useCreateLucyState(property);
+
+  useEffect(() => {
+    state.setValue(property);
+  }, [property, state]);
+
+  return state;
 }

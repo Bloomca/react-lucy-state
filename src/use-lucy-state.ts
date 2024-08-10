@@ -1,14 +1,26 @@
 import { useRef, useEffect } from "react";
 import { useCreateLucyState } from "./use-create-lucy-state";
 
+type createdState<StateType> = ReturnType<typeof useCreateLucyState<StateType>>;
+
 export function useLucyState<T>(
   initialValue: T,
-  subscribeCallback?: (setValue: (newValue: T) => void) => Function
+  {
+    subscribeCallback,
+    comparator,
+  }: {
+    subscribeCallback?: (setValue: (newValue: T) => void) => Function;
+    comparator?: (a: T, b: T) => boolean;
+  } = {}
 ) {
-  // this ref is created one time and is never changed
-  // ideally, we'd want to execute the function only one time
-  // but for now it's okay
-  const lucyStateRef = useRef(useCreateLucyState(initialValue));
+  const initStateRef = useRef<null | createdState<T>>(null);
+
+  // we make sure we initialize the state only one time, microoptimization
+  if (initStateRef.current === null) {
+    initStateRef.current = useCreateLucyState(initialValue, comparator);
+  }
+
+  const lucyStateRef = useRef(initStateRef.current);
 
   useEffect(() => {
     if (subscribeCallback) {

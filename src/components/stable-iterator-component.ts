@@ -1,7 +1,7 @@
 import { createElement, useRef } from "react";
 import { StableComponent } from "./stable-component";
-import { useConvertToLucyState } from "./convert-into-lucy-state";
-import type { LucyState } from "./types";
+import { useConvertToLucyState } from "../convert-into-lucy-state";
+import type { LucyState } from "../types";
 import type { ReactNode } from "react";
 
 export function StableIteratorComponent<T>({

@@ -16,7 +16,7 @@ export function createLucyState<T>(
     children,
   }: {
     selector?: (value: T) => F;
-    children: (value: F) => React.ReactNode;
+    children?: (value: F) => React.ReactNode;
   }) {
     const [state, setState] = useState(() => selector(value));
     useEffect(() => {
@@ -30,7 +30,7 @@ export function createLucyState<T>(
       };
     }, []);
 
-    return children(state);
+    return children ? children(state) : (state as unknown as React.ReactNode);
   }
 
   function useTrackValue<F>(
@@ -119,28 +119,6 @@ export function createLucyState<T>(
       subscriptions.forEach((cb) => cb(newValue));
     },
     Value: LucyValueComponent,
-    renderValue: (
-      cb: (value: T) => React.ReactNode,
-      // this is for meta props, like `key` or `ref`
-      props?: Record<string, any>
-    ) => {
-      return createElement(LucyValueComponent, {
-        children: cb,
-        ...props,
-      });
-    },
-    renderValueSelector<F>(
-      selector: (value: T) => F,
-      cb: (value: F) => React.ReactNode,
-      // this is for meta props, like `key` or `ref`
-      props?: Record<string, any>
-    ) {
-      return createElement(LucyValueComponent, {
-        children: cb,
-        selector,
-        ...props,
-      });
-    },
     useTrackValue: (
       cb: (value: T) => void | Function,
       options: {

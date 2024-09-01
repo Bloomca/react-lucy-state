@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
-import { useCreateLucyState } from "./use-create-lucy-state";
+import { createLucyState } from "./create-lucy-state";
 
-type createdState<StateType> = ReturnType<typeof useCreateLucyState<StateType>>;
+type createdState<StateType> = ReturnType<typeof createLucyState<StateType>>;
 
 export function useLucyState<T>(
   initialValue: T,
@@ -17,7 +17,7 @@ export function useLucyState<T>(
 
   // we make sure we initialize the state only one time, microoptimization
   if (initStateRef.current === null) {
-    initStateRef.current = useCreateLucyState(initialValue, comparator);
+    initStateRef.current = createLucyState(initialValue, comparator);
   }
 
   const lucyStateRef = useRef(initStateRef.current);

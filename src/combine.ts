@@ -1,6 +1,6 @@
-import { useCreateLucyState } from "./use-create-lucy-state";
+import { useLucyState } from "./use-lucy-state";
 
-type createdState<StateType> = ReturnType<typeof useCreateLucyState<StateType>>;
+type createdState<StateType> = ReturnType<typeof useLucyState<StateType>>;
 
 export function useCombine<A, B>(
   state1: createdState<A>,
@@ -76,7 +76,7 @@ export function useCombine<A, B, C, D, E, F, G, H, I, J>(
 ): createdState<[A, B, C, D, E, F, G, H, I, J]>;
 export function useCombine(...states) {
   const initialValue = states.map((state) => state.getValue());
-  const combinedState = useCreateLucyState(initialValue);
+  const combinedState = useLucyState(initialValue);
 
   states.forEach((state) => {
     state.useTrackValue(

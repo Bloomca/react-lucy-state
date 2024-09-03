@@ -26,11 +26,15 @@
   "devDependencies": {
     "@types/react": "^18.3.3",
     "react": "^18.3.1",
-    "tsup": "^8.2.4"
+    "react-redux": "^9.1.2",
+    "tsup": "^8.2.4",
+    "zustand": "^4.5.5"
   },
   "peerDependencies": {
     "@types/react": ">=18",
-    "react": ">=18"
+    "react": ">=18",
+    "zustand": ">=4",
+    "react-redux": ">=7"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -38,6 +42,12 @@
     },
     "react": {
       "optional": false
+    },
+    "zustand": {
+      "optional": true
+    },
+    "react-redux": {
+      "optional": true
     }
   }
 }

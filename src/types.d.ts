@@ -8,7 +8,7 @@ export type LucyState<T> = {
     children,
   }: {
     selector?: (value: T) => F;
-    children: (value: F) => React.ReactNode;
+    children?: (value: F) => React.ReactNode;
   }) => React.ReactNode;
   useTrackValue: (
     cb: (value: T) => void | Function,

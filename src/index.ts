@@ -6,6 +6,7 @@ export {
   useConvertLucyStateToProperty,
 } from "./convert-into-lucy-state";
 
+export { UnstableComponent } from "./components/unstable-component";
 export { StableComponent } from "./components/stable-component";
 export { StableIteratorComponent } from "./components/stable-iterator-component";
 

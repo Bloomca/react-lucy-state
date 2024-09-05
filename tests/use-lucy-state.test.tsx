@@ -4,7 +4,7 @@ import { render } from "@testing-library/react";
 import { screen } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 
-import { useLucyState } from "./use-lucy-state";
+import { useLucyState } from "../src/use-lucy-state";
 
 describe("useLucyState", () => {
   it("state works as expected", async () => {

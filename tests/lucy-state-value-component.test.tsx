@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { useLucyState } from "./use-lucy-state";
+import { useLucyState } from "../src/use-lucy-state";
 
 describe("<state$.Value />", () => {
   it("renders the string value if no children are provided", async () => {

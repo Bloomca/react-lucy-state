@@ -25,4 +25,5 @@ export type LucyState<T> = {
       comparator?: (a: F, b: F) => boolean;
     }
   ): void;
+  trackValue(cb: (value: T) => void | Function): () => void;
 };

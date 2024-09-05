@@ -138,6 +138,16 @@ export function createLucyState<T>(
     ) {
       useTrackValue<F>(selector, cb, options);
     },
+    trackValue(cb: (value: T) => void | Function) {
+      const subscription = (newValue: T) => {
+        cb(newValue);
+      };
+      subscriptions.push(subscription);
+
+      return () => {
+        subscriptions = subscriptions.filter((cb) => cb !== subscription);
+      };
+    },
   };
 }
 

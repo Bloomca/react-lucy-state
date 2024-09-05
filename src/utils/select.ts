@@ -1,4 +1,4 @@
-import { useLucyState } from "./use-lucy-state";
+import { useLucyState } from "../use-lucy-state";
 
 type State<StateType> = ReturnType<typeof useLucyState<StateType>>;
 

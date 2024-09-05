@@ -1,6 +1,6 @@
-import React, { useState, createElement, useEffect, useRef, memo } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 
-import type { LucyState } from "./types";
+import type { LucyState } from "../src/types";
 
 const noValueSymbol = Symbol("no value");
 

@@ -12,7 +12,7 @@ export type LucyState<T> = {
   }) => React.ReactNode;
   useTrackValue: (
     cb: (value: T) => void | Function,
-    options: {
+    options?: {
       skipFirstCall?: boolean;
       comparator?: (a: T, b: T) => boolean;
     }

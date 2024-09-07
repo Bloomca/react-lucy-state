@@ -187,4 +187,49 @@ describe("<state$.Value />", () => {
     await user.click(screen.getByRole("button", { name: "Change value" }));
     expect(spy).toHaveBeenCalledTimes(2);
   });
+
+  it("works with input components as expected", async () => {
+    const user = userEvent.setup();
+    function Component() {
+      const value$ = useLucyState("");
+
+      return (
+        <div>
+          <value$.Value>
+            {(value) => (
+              <input
+                type="text"
+                aria-label="valueInput"
+                value={value}
+                onChange={(e) => value$.setValue(e.target.value)}
+              />
+            )}
+          </value$.Value>
+          <h3>
+            Current value is: <value$.Value />
+          </h3>
+        </div>
+      );
+    }
+
+    render(<Component />);
+
+    await user.type(
+      screen.getByRole("textbox", { name: "valueInput" }),
+      "text"
+    );
+
+    expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
+      "Current value is: text"
+    );
+
+    await user.type(
+      screen.getByRole("textbox", { name: "valueInput" }),
+      " and more text"
+    );
+
+    expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
+      "Current value is: text and more text"
+    );
+  });
 });

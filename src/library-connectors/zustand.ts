@@ -56,11 +56,11 @@ export function useZustandHook<T, F, A, B, C>({
   }
 
   useEffect(() => {
-    const unsbuscribe = store.subscribe((currentState) => {
+    const unsubscribe = store.subscribe((currentState) => {
       updateStateRef.current(currentState);
     });
 
-    return unsbuscribe;
+    return unsubscribe;
   }, [store, state$]);
 
   useEffect(() => {

@@ -139,7 +139,58 @@ function Component() {
 
 ## Effects
 
-LucyState provides a `useTrackValue` and `useTrackValueSelector` methods, which should work as a replacement for `React.useEffect` the vast majority of the time.
+LucyState provides a `useTrackValue` and `useTrackValueSelector` methods, which should work as a replacement for `React.useEffect` the vast majority of the time. As a simple example:
+
+```jsx
+import { useLucyState } from "react-lucy-state";
+
+function Component() {
+  const counter$ = useLucyState(0);
+
+  counter$.useTrackValue((counterValue) => {
+    console.log(`counter value is ${counterValue}`);
+  });
+
+  return (
+    <div>
+      <button onClick={() => counter$.setValue(counter$.getValue() + 1)}>
+        Increment counter
+      </button>
+    </div>
+  );
+}
+```
+
+Similar to `React.useEffect`, you can return a function, which will be executed when the value changes or the component unmounts. If you need to run a function which depends on multiple Lucy states, there is a helper `useCombine`:
+
+```jsx
+import { useLucyState, useCombine } from "react-lucy-state";
+
+function Component() {
+  const firstCounter$ = useLucyState(0);
+  const secondCounter$ = useLucyState(0);
+
+  const combinedCounter$ = useCombine(firstCounter$, secondCounter$);
+  combinedCounter$.useTrackValue(([firstValue, secondValue]) => {
+    console.log(`total counter value is ${firstValue + secondValue}`);
+  });
+
+  return (
+    <div>
+      <button
+        onClick={() => firstCounter$.setValue(firstCounter$.getValue() + 1)}
+      >
+        Increment first counter
+      </button>
+      <button
+        onClick={() => secondCounter$.setValue(secondCounter$.getValue() + 1)}
+      >
+        Increment second counter
+      </button>
+    </div>
+  );
+}
+```
 
 ## Interoperability
 

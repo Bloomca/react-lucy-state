@@ -194,4 +194,56 @@ function Component() {
 
 ## Interoperability
 
-You can switch back and forth between regular props and Lucy state, but you should be careful while doing so. You can use `useConvertToLucyState` to convert a regular property into a state, and then `useConvertLucyStateToProperty` to convert it the other way around.
+You can switch back and forth between regular props and Lucy state, but you should be careful while doing so. First, you can convert a Lucy state into a regular React state property with `useConvertLucyStateToProperty` helper. Remember that by doing so, the whole component will re-render, including all its children. Here is an example:
+
+```jsx
+function Component() {
+  const value$ = useLucyState(0);
+
+  return (
+    <div>
+      <button onClick={() => value$.setValue(value$.getValue() + 1)}>
+        Increment value
+      </button>
+      <Content value$={value$} />
+    </div>
+  );
+}
+
+function Content({ value$ }: { value$: LucyState<number> }) {
+  const value = useConvertLucyStateToProperty(value$);
+
+  return <h2>Current value is {value}</h2>;
+}
+```
+
+In this example, the whole `<Content />` component will re-render on each value change.
+
+You can perform the same operation, but the other way. To do, just wrap a regular React variable in `useConvertToLucyState`, and you'll receive a stable Lucy state. Again, be careful and remember that just doing so won't change much, as having a regular variable means the whole component will re-render. So you'll probably want to wrap at least some children in a `<StableComponent />`. Here is a reverse example:
+
+```jsx
+function Component({ value, onClick }) {
+  const value$ = useConvertToLucyState(value);
+
+  return (
+    <div>
+      <button onClick={onClick}>Increment value</button>
+      <StableComponent>
+        <Content value$={value$} />
+      </StableComponent>
+    </div>
+  );
+}
+
+function Content({ value$ }: { value$: LucyState<number> }) {
+  useEffect(spy);
+
+  return (
+    <h2>
+      Current value is <value$.Value />
+    </h2>
+  );
+}
+```
+
+As you can see, we need to wrap `<Content />` in a stable component to make sure it doesn't re-render when the `value` changes.

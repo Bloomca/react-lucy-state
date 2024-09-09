@@ -103,13 +103,13 @@ import {
   useLucyState,
   UnstableComponent,
   StableComponent,
-  useSelect,
+  useSelect$,
 } from "react-lucy-state";
 
 function Component() {
   const input$ = useLucyState("");
   // we check if the value contains only numbers
-  const hasError$ = useSelect(input$, (value) => !value.match(/^[0-9]+$/i));
+  const hasError$ = useSelect$(input$, (value) => !value.match(/^[0-9]+$/i));
 
   return (
     <div>
@@ -161,16 +161,16 @@ function Component() {
 }
 ```
 
-Similar to `React.useEffect`, you can return a function, which will be executed when the value changes or the component unmounts. If you need to run a function which depends on multiple Lucy states, there is a helper `useCombine`:
+Similar to `React.useEffect`, you can return a function, which will be executed when the value changes or the component unmounts. If you need to run a function which depends on multiple Lucy states, there is a helper `useCombine$`:
 
 ```jsx
-import { useLucyState, useCombine } from "react-lucy-state";
+import { useLucyState, useCombine$ } from "react-lucy-state";
 
 function Component() {
   const firstCounter$ = useLucyState(0);
   const secondCounter$ = useLucyState(0);
 
-  const combinedCounter$ = useCombine(firstCounter$, secondCounter$);
+  const combinedCounter$ = useCombine$(firstCounter$, secondCounter$);
   combinedCounter$.useTrackValue(([firstValue, secondValue]) => {
     console.log(`total counter value is ${firstValue + secondValue}`);
   });

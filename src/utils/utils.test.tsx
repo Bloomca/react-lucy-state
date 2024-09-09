@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 
 import { useLucyState } from "../use-lucy-state";
 import { useReduce$ } from "./reduce";
+import { useSelect$ } from "./select";
 
 describe("utility functions", () => {
   describe("useReduce$", () => {
@@ -48,6 +49,110 @@ describe("utility functions", () => {
 
       expect(spy).toHaveBeenCalledTimes(3);
       expect(spy).toHaveBeenLastCalledWith("Updated value: 5");
+    });
+
+    it("does not update the value if comparator returns false", async () => {
+      const user = userEvent.setup();
+      const spy = jest.fn();
+      let state = {
+        firstValue: "some",
+        secondValue: "more",
+        thirdValue: "and even more",
+      };
+      function Component() {
+        const state$ = useLucyState(state);
+        const value$ = useLucyState(0);
+
+        const reducedValue$ = useReduce$(
+          [state$, value$],
+          ([stateObject, value]) => ({
+            first: stateObject.firstValue,
+            second: stateObject.secondValue,
+            incrementValue: value,
+          }),
+          (previousValue, nextValue) =>
+            previousValue.first === nextValue.first &&
+            previousValue.second === nextValue.second &&
+            previousValue.incrementValue === nextValue.incrementValue
+        );
+
+        reducedValue$.useTrackValue(spy);
+
+        return (
+          <div>
+            <button onClick={() => value$.setValue((value) => value + 1)}>
+              Increment
+            </button>
+            <button onClick={() => state$.setValue(state)}>Update state</button>
+          </div>
+        );
+      }
+
+      render(<Component />);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await user.click(screen.getByRole("button", { name: "Increment" }));
+
+      expect(spy).toHaveBeenCalledTimes(2);
+
+      state = {
+        firstValue: "some",
+        secondValue: "more",
+        thirdValue: "new third value",
+      };
+      await user.click(screen.getByRole("button", { name: "Update state" }));
+
+      expect(spy).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe("useSelect$", () => {
+    it("does not update the value if comparator returns false", async () => {
+      const spy = jest.fn();
+      const user = userEvent.setup();
+      function Component() {
+        const value$ = useLucyState(0);
+        const valueWithStep$ = useSelect$(
+          value$,
+          (value) => value,
+          (previousValue, nextValue) => nextValue - previousValue <= 2
+        );
+
+        valueWithStep$.useTrackValue(spy, { skipFirstCall: true });
+
+        return (
+          <div>
+            <button onClick={() => value$.setValue((value) => value + 1)}>
+              Increment
+            </button>
+            <h2>
+              Step value: <valueWithStep$.Value />
+            </h2>
+          </div>
+        );
+      }
+
+      render(<Component />);
+
+      expect(spy).toHaveBeenCalledTimes(0);
+      expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
+        "Step value: 0"
+      );
+
+      await user.click(screen.getByRole("button", { name: "Increment" }));
+      expect(spy).toHaveBeenCalledTimes(0);
+
+      await user.click(screen.getByRole("button", { name: "Increment" }));
+      expect(spy).toHaveBeenCalledTimes(0);
+
+      await user.click(screen.getByRole("button", { name: "Increment" }));
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenLastCalledWith(3);
+
+      expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
+        "Step value: 3"
+      );
     });
   });
 });

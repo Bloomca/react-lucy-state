@@ -65,6 +65,12 @@ export function createLucyState<T>(
         const unsubscribe = cb(selectedValue);
         dataRef.current.lastValue = selectedValue;
         dataRef.current.unsubscribe = unsubscribe || undefined;
+      } else if (comparator) {
+        // if we are skipping the first call, we still want to set the last value in case we have the comparator
+        const selectedValue = selector
+          ? selector(value)
+          : (value as unknown as F);
+        dataRef.current.lastValue = selectedValue;
       }
     }
 

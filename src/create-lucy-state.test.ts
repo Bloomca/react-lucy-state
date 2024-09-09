@@ -51,4 +51,25 @@ describe("createLucyState", () => {
 
     expect(spy).toHaveBeenLastCalledWith(2);
   });
+
+  it("supports comparator", () => {
+    const spy1 = jest.fn();
+    const state1$ = createLucyState({ prop: 1 });
+
+    state1$.trackValue(spy1);
+
+    state1$.setValue({ prop: 1 });
+    expect(spy1).toHaveBeenCalledTimes(1);
+
+    const spy2 = jest.fn();
+    const state2$ = createLucyState(
+      { prop: 1 },
+      (prevState, nextState) => prevState.prop === nextState.prop
+    );
+
+    state2$.trackValue(spy2);
+
+    state2$.setValue({ prop: 1 });
+    expect(spy2).toHaveBeenCalledTimes(0);
+  });
 });

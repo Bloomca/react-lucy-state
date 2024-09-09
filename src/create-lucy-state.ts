@@ -5,10 +5,12 @@ import type { LucyState } from "../src/types";
 const noValueSymbol = Symbol("no value");
 
 export function createLucyState<T>(
-  initialValue: T,
+  initialValue: T | (() => T),
   comparator?: (a: T, b: T) => boolean
 ): LucyState<T> {
-  let value = initialValue;
+  let value =
+    // @ts-expect-error
+    typeof initialValue === "function" ? initialValue() : initialValue;
   let subscriptions: Function[] = [];
 
   function LucyValueComponent<F = T>({
@@ -104,7 +106,12 @@ export function createLucyState<T>(
   return {
     // read the current value; helpful to read the latest value in callbacks/event handlers
     getValue: () => value,
-    setValue: (newValue: T) => {
+    setValue: (passedNewValue: T | ((currentValue: T) => T)) => {
+      const newValue =
+        typeof passedNewValue === "function"
+          ? // @ts-expect-error
+            passedNewValue(value)
+          : passedNewValue;
       if (comparator) {
         // don't rerun subscriptions if comparator says they are the same
         if (comparator(value, newValue)) return;

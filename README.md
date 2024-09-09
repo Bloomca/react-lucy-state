@@ -153,7 +153,7 @@ function Component() {
 
   return (
     <div>
-      <button onClick={() => counter$.setValue(counter$.getValue() + 1)}>
+      <button onClick={() => counter$.setValue((value) => value + 1)}>
         Increment counter
       </button>
     </div>
@@ -202,7 +202,7 @@ function Component() {
 
   return (
     <div>
-      <button onClick={() => value$.setValue(value$.getValue() + 1)}>
+      <button onClick={() => value$.setValue((value) => value + 1)}>
         Increment value
       </button>
       <Content value$={value$} />

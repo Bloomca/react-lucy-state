@@ -2,7 +2,7 @@ import React from "react";
 
 export type LucyState<T> = {
   getValue: () => T;
-  setValue: (newValue: T) => void;
+  setValue: (newValue: T | ((currentValue: T) => T)) => void;
   Value: <F = T>({
     selector,
     children,

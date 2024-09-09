@@ -1,6 +1,7 @@
 export { useLucyState } from "./use-lucy-state";
 export { useCombine$ } from "./utils/combine";
 export { useSelect$ } from "./utils/select";
+export { useReduce$ } from "./utils/reduce";
 export {
   useConvertToLucyState,
   useConvertLucyStateToProperty,

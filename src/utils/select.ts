@@ -6,9 +6,7 @@ function useSelect$<F, T>(
   state: State<F>,
   selector: (state: F) => T
 ): State<T> {
-  const initialValue = selector(state.getValue());
-
-  const newState = useLucyState(initialValue);
+  const newState = useLucyState(() => selector(state.getValue()));
   state.useTrackValueSelector(
     selector,
     (selectedState) => {

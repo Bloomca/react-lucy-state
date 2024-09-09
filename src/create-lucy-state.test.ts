@@ -27,4 +27,28 @@ describe("createLucyState", () => {
       expect(spy).not.toHaveBeenCalledWith(3);
     });
   });
+
+  it("support initial value set as a function", () => {
+    const state$ = createLucyState(() => 1);
+
+    expect(state$.getValue()).toBe(1);
+  });
+
+  it("receives current value as a first argument if passed a function to setValue", () => {
+    const spy = jest.fn();
+    const state$ = createLucyState(1);
+    state$.setValue((currentValue) => {
+      spy(currentValue);
+      return 2;
+    });
+
+    expect(spy).toHaveBeenLastCalledWith(1);
+
+    state$.setValue((currentValue) => {
+      spy(currentValue);
+      return 3;
+    });
+
+    expect(spy).toHaveBeenLastCalledWith(2);
+  });
 });

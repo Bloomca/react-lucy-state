@@ -4,14 +4,8 @@ import { createLucyState } from "./create-lucy-state";
 type createdState<StateType> = ReturnType<typeof createLucyState<StateType>>;
 
 export function useLucyState<T>(
-  initialValue: T,
-  {
-    subscribeCallback,
-    comparator,
-  }: {
-    subscribeCallback?: (setValue: (newValue: T) => void) => Function;
-    comparator?: (a: T, b: T) => boolean;
-  } = {}
+  initialValue: T | (() => T),
+  comparator?: (a: T, b: T) => boolean
 ) {
   const initStateRef = useRef<null | createdState<T>>(null);
 
@@ -21,17 +15,6 @@ export function useLucyState<T>(
   }
 
   const lucyStateRef = useRef(initStateRef.current);
-
-  useEffect(() => {
-    if (subscribeCallback) {
-      const unsubscribe = subscribeCallback(lucyStateRef.current.setValue);
-
-      return () => unsubscribe();
-    }
-    // ideally we'd want to have the callback which never changes
-    // otherwise it will change on every re-render, which will cause constant
-    // registering/de-registering
-  }, [subscribeCallback]);
 
   return lucyStateRef.current;
 }

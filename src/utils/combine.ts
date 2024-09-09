@@ -75,8 +75,9 @@ export function useCombine$<A, B, C, D, E, F, G, H, I, J>(
   state10: createdState<J>
 ): createdState<[A, B, C, D, E, F, G, H, I, J]>;
 export function useCombine$(...states) {
-  const initialValue = states.map((state) => state.getValue());
-  const combinedState = useLucyState(initialValue);
+  const combinedState = useLucyState(() =>
+    states.map((state) => state.getValue())
+  );
 
   states.forEach((state) => {
     state.useTrackValue(

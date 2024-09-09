@@ -1,6 +1,6 @@
 {
   "name": "react-lucy-state",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "More performant replacement for React.useState",
   "type": "module",
   "main": "dist/index.js",
@@ -18,7 +18,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsup"
+    "build": "tsup",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

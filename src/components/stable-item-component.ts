@@ -4,20 +4,14 @@ import { useConvertToLucyState } from "../convert-into-lucy-state";
 import type { LucyState } from "../types";
 import type { ReactNode } from "react";
 
-function _StableIteratorComponent<T>({
+function _StableItemComponent<T>({
   item,
-  index,
   children,
 }: {
   item: T;
-  index: number;
-  children: (
-    itemState: LucyState<T>,
-    indexState: LucyState<number>
-  ) => ReactNode;
+  children: (itemState: LucyState<T>) => ReactNode;
 }) {
   const itemState = useConvertToLucyState(item);
-  const indexState = useConvertToLucyState(index);
 
   const nodeRef = useRef<{ initialized: boolean; markup: ReactNode }>({
     initialized: false,
@@ -27,7 +21,7 @@ function _StableIteratorComponent<T>({
   if (nodeRef.current.initialized === false) {
     nodeRef.current = {
       initialized: true,
-      markup: children(itemState, indexState),
+      markup: children(itemState),
     };
   }
 
@@ -37,11 +31,10 @@ function _StableIteratorComponent<T>({
 }
 
 // @ts-expect-error types are the same
-export const StableIteratorComponent: typeof _StableIteratorComponent = memo(
-  _StableIteratorComponent,
+export const StableItemComponent: typeof _StableItemComponent = memo(
+  _StableItemComponent,
   (prevProps, newProps) => {
-    return (
-      prevProps.item === newProps.item && prevProps.index === newProps.item
-    );
+    // only item can change, we ignore the children callback
+    return prevProps.item === newProps.item;
   }
 );

@@ -8,6 +8,7 @@ export {
 
 export { UnstableComponent } from "./components/unstable-component";
 export { StableComponent } from "./components/stable-component";
+export { StableItemComponent } from "./components/stable-item-component";
 export { StableIteratorComponent } from "./components/stable-iterator-component";
 
 export type { LucyState } from "./types";

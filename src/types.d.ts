@@ -2,7 +2,6 @@ import React from "react";
 
 export type LucyState<T> = {
   getValue: () => T;
-  setValue: (newValue: T | ((currentValue: T) => T)) => void;
   Value: <F = T>({
     selector,
     children,
@@ -27,3 +26,7 @@ export type LucyState<T> = {
   ): void;
   trackValue(cb: (value: T) => void | Function): () => void;
 };
+
+export function SetState<T>(newValue: T | ((currentValue: T) => T)): void;
+
+export type LucyRef<T> = [LucyState<T>, typeof SetState<T>];

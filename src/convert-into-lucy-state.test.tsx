@@ -16,11 +16,11 @@ describe("React interop", () => {
     it("converts the state and updates the value correctly", async () => {
       const user = userEvent.setup();
       function Component() {
-        const value$ = useLucyState(0);
+        const [value$, setValue] = useLucyState(0);
 
         return (
           <div>
-            <button onClick={() => value$.setValue(value$.getValue() + 1)}>
+            <button onClick={() => setValue((value) => value + 1)}>
               Increment value
             </button>
             <Content value$={value$} />

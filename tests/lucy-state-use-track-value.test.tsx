@@ -10,7 +10,7 @@ describe("Lucy Start use track value", () => {
 
     let newValue = "new value";
     function Component() {
-      const state$ = useLucyState("initial value");
+      const [state$, setState] = useLucyState("initial value");
 
       state$.useTrackValue((stateValue) => {
         spy(stateValue);
@@ -18,9 +18,7 @@ describe("Lucy Start use track value", () => {
 
       return (
         <div>
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
         </div>
       );
     }
@@ -42,7 +40,7 @@ describe("Lucy Start use track value", () => {
 
     let newValue = "new value";
     function Component() {
-      const state$ = useLucyState("initial value");
+      const [state$, setState] = useLucyState("initial value");
 
       state$.useTrackValue(
         (stateValue) => {
@@ -53,9 +51,7 @@ describe("Lucy Start use track value", () => {
 
       return (
         <div>
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
         </div>
       );
     }

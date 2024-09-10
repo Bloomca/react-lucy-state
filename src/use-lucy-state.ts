@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { createLucyState } from "./create-lucy-state";
 
 type createdState<StateType> = ReturnType<typeof createLucyState<StateType>>;
@@ -14,7 +14,5 @@ export function useLucyState<T>(
     initStateRef.current = createLucyState(initialValue, comparator);
   }
 
-  const lucyStateRef = useRef(initStateRef.current);
-
-  return lucyStateRef.current;
+  return initStateRef.current;
 }

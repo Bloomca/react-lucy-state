@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, memo } from "react";
 
-import type { LucyState } from "../src/types";
+import type { LucyState, LucyRef, SetState } from "../src/types";
 
 const noValueSymbol = Symbol("no value");
 
 export function createLucyState<T>(
   initialValue: T | (() => T),
   comparator?: (a: T, b: T) => boolean
-): LucyState<T> {
+): LucyRef<T> {
   let value =
     // @ts-expect-error
     typeof initialValue === "function" ? initialValue() : initialValue;
@@ -109,28 +109,9 @@ export function createLucyState<T>(
     }, []);
   }
 
-  return {
+  const lucyState: LucyState<T> = {
     // read the current value; helpful to read the latest value in callbacks/event handlers
     getValue: () => value,
-    setValue: (passedNewValue: T | ((currentValue: T) => T)) => {
-      const newValue =
-        typeof passedNewValue === "function"
-          ? // @ts-expect-error
-            passedNewValue(value)
-          : passedNewValue;
-      if (comparator) {
-        // don't rerun subscriptions if comparator says they are the same
-        if (comparator(value, newValue)) return;
-        value = newValue;
-      } else {
-        // small optimization to avoid running subscriptions
-        // if the referential equality is preserved
-        if (value === newValue) return;
-        value = newValue;
-      }
-
-      subscriptions.forEach((cb) => cb(newValue));
-    },
     Value: LucyValueComponent,
     useTrackValue: (
       cb: (value: T) => void | Function,
@@ -162,14 +143,26 @@ export function createLucyState<T>(
       };
     },
   };
-}
 
-export function useConvertToLucyState<T>(property: T) {
-  const state = createLucyState(property);
+  const setValue: typeof SetState<T> = (passedNewValue) => {
+    const newValue =
+      typeof passedNewValue === "function"
+        ? // @ts-expect-error
+          passedNewValue(value)
+        : passedNewValue;
+    if (comparator) {
+      // don't rerun subscriptions if comparator says they are the same
+      if (comparator(value, newValue)) return;
+      value = newValue;
+    } else {
+      // small optimization to avoid running subscriptions
+      // if the referential equality is preserved
+      if (value === newValue) return;
+      value = newValue;
+    }
 
-  useEffect(() => {
-    state.setValue(property);
-  }, [property, state]);
+    subscriptions.forEach((cb) => cb(newValue));
+  };
 
-  return state;
+  return [lucyState, setValue];
 }

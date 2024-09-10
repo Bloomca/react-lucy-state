@@ -21,13 +21,11 @@ describe("Interop between <StableComponent> and <UnstableComponent>", () => {
     }
 
     function Component() {
-      const state$ = useLucyState("initialValue");
+      const [state$, setState] = useLucyState("initialValue");
 
       return (
         <div>
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
           <UnstableComponent items$={[state$]}>
             {([value]) => (
               <div aria-label={value}>

@@ -31,7 +31,7 @@ export function useZustandHook<T, F, A, B, C>({
       transformState$(dependencies$) as any
     );
   }
-  const state$ = useLucyState(firstValue.current);
+  const [state$, setState] = useLucyState(firstValue.current);
   const itemsRef = useRef(dependencies$);
 
   const updateStateRef = useRef(null);
@@ -41,7 +41,7 @@ export function useZustandHook<T, F, A, B, C>({
         currentStoreState,
         transformState$(itemsRef.current) as any
       );
-      state$.setValue(newValue);
+      setState(newValue);
     };
   }
 

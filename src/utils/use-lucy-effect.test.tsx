@@ -12,9 +12,9 @@ describe("useLucyEffect", () => {
     let newValue2 = 10;
     let newValue3 = 15;
     function Component() {
-      const value1$ = useLucyState(1);
-      const value2$ = useLucyState(2);
-      const value3$ = useLucyState(3);
+      const [value1$, setValue1] = useLucyState(1);
+      const [value2$, setValue2] = useLucyState(2);
+      const [value3$, setValue3] = useLucyState(3);
 
       useLucyEffect(
         ([]) => {
@@ -28,15 +28,9 @@ describe("useLucyEffect", () => {
           <h3>
             Value3 is: <value3$.Value />
           </h3>
-          <button onClick={() => value1$.setValue(newValue1)}>
-            Change value1
-          </button>
-          <button onClick={() => value2$.setValue(newValue2)}>
-            Change value2
-          </button>
-          <button onClick={() => value3$.setValue(newValue3)}>
-            Change value3
-          </button>
+          <button onClick={() => setValue1(newValue1)}>Change value1</button>
+          <button onClick={() => setValue2(newValue2)}>Change value2</button>
+          <button onClick={() => setValue3(newValue3)}>Change value3</button>
         </div>
       );
     }
@@ -61,9 +55,9 @@ describe("useLucyEffect", () => {
     let newValue2 = 10;
     let newValue3 = 15;
     function Component() {
-      const value1$ = useLucyState(1);
-      const value2$ = useLucyState(2);
-      const value3$ = useLucyState(3);
+      const [value1$, setValue1] = useLucyState(1);
+      const [value2$, setValue2] = useLucyState(2);
+      const [value3$, setValue3] = useLucyState(3);
 
       useLucyEffect(
         ([value1, value2]) => {
@@ -77,15 +71,9 @@ describe("useLucyEffect", () => {
           <h3>
             Value3 is: <value3$.Value />
           </h3>
-          <button onClick={() => value1$.setValue(newValue1)}>
-            Change value1
-          </button>
-          <button onClick={() => value2$.setValue(newValue2)}>
-            Change value2
-          </button>
-          <button onClick={() => value3$.setValue(newValue3)}>
-            Change value3
-          </button>
+          <button onClick={() => setValue1(newValue1)}>Change value1</button>
+          <button onClick={() => setValue2(newValue2)}>Change value2</button>
+          <button onClick={() => setValue3(newValue3)}>Change value3</button>
         </div>
       );
     }

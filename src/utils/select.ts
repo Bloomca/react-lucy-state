@@ -1,22 +1,24 @@
 import { useLucyState } from "../use-lucy-state";
 
-type State<StateType> = ReturnType<typeof useLucyState<StateType>>;
+import type { LucyState } from "../types";
 
 function useSelect$<F, T>(
-  state: State<F>,
+  state: LucyState<F>,
   selector: (state: F) => T,
   comparator?: (previousSelectedState: T, nextSelectedState: T) => boolean
-): State<T> {
-  const newState = useLucyState(() => selector(state.getValue()));
+): LucyState<T> {
+  const [newState$, setNewState] = useLucyState(() =>
+    selector(state.getValue())
+  );
   state.useTrackValueSelector(
     selector,
     (selectedState) => {
-      newState.setValue(selectedState);
+      setNewState(selectedState);
     },
     { skipFirstCall: true, comparator }
   );
 
-  return newState;
+  return newState$;
 }
 
 export { useSelect$ };

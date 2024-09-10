@@ -13,8 +13,8 @@ describe("utility functions", () => {
       let newValue1 = 5;
       let newValue2 = "Updated value";
       function Component() {
-        const value1$ = useLucyState(0);
-        const value2$ = useLucyState("Initial value");
+        const [value1$, setValue1] = useLucyState(0);
+        const [value2$, setValue2] = useLucyState("Initial value");
 
         const combinedValue$ = useReduce$(
           [value1$, value2$],
@@ -25,12 +25,8 @@ describe("utility functions", () => {
 
         return (
           <div>
-            <button onClick={() => value1$.setValue(newValue1)}>
-              Change value1
-            </button>
-            <button onClick={() => value2$.setValue(newValue2)}>
-              Change value2
-            </button>
+            <button onClick={() => setValue1(newValue1)}>Change value1</button>
+            <button onClick={() => setValue2(newValue2)}>Change value2</button>
           </div>
         );
       }
@@ -60,8 +56,8 @@ describe("utility functions", () => {
         thirdValue: "and even more",
       };
       function Component() {
-        const state$ = useLucyState(state);
-        const value$ = useLucyState(0);
+        const [state$, setState] = useLucyState(state);
+        const [value$, setValue] = useLucyState(0);
 
         const reducedValue$ = useReduce$(
           [state$, value$],
@@ -80,10 +76,10 @@ describe("utility functions", () => {
 
         return (
           <div>
-            <button onClick={() => value$.setValue((value) => value + 1)}>
+            <button onClick={() => setValue((value) => value + 1)}>
               Increment
             </button>
-            <button onClick={() => state$.setValue(state)}>Update state</button>
+            <button onClick={() => setState(state)}>Update state</button>
           </div>
         );
       }
@@ -112,7 +108,7 @@ describe("utility functions", () => {
       const spy = jest.fn();
       const user = userEvent.setup();
       function Component() {
-        const value$ = useLucyState(0);
+        const [value$, setValue] = useLucyState(0);
         const valueWithStep$ = useSelect$(
           value$,
           (value) => value,
@@ -123,7 +119,7 @@ describe("utility functions", () => {
 
         return (
           <div>
-            <button onClick={() => value$.setValue((value) => value + 1)}>
+            <button onClick={() => setValue((value) => value + 1)}>
               Increment
             </button>
             <h2>

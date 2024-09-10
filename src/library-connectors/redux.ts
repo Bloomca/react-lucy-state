@@ -4,16 +4,16 @@ import { useLucyState } from "../use-lucy-state";
 
 export function useReduxHook<T, F>(selector: (state: T) => F) {
   const store = useStore<T>();
-  const state = useLucyState(selector(store.getState()));
+  const [state$, setState] = useLucyState(selector(store.getState()));
 
   useEffect(() => {
     const unsbuscribe = store.subscribe(() => {
       const newValue = selector(store.getState());
-      state.setValue(newValue);
+      setState(newValue);
     });
 
     return unsbuscribe;
-  }, [store, state]);
+  }, [store, setState]);
 
-  return state;
+  return state$;
 }

@@ -170,7 +170,7 @@ describe("useZustandHook", () => {
     }));
 
     function Component() {
-      const select$ = useLucyState("first");
+      const [select$, setSelection] = useLucyState("first");
       const zustand$ = useZustandHook({
         store: zustandStore,
         selector: (state, [selection]) => state.value[selection],
@@ -182,7 +182,7 @@ describe("useZustandHook", () => {
           <h2>
             Current value is: <zustand$.Value />
           </h2>
-          <button onClick={() => select$.setValue(newSelection)}>
+          <button onClick={() => setSelection(newSelection)}>
             Change selection
           </button>
           <button onClick={() => zustandStore.getState().updateValue()}>

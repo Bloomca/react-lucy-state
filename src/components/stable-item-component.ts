@@ -11,7 +11,7 @@ function _StableItemComponent<T>({
   item: T;
   children: (itemState: LucyState<T>) => ReactNode;
 }) {
-  const itemState = useConvertToLucyState(item);
+  const item$ = useConvertToLucyState(item);
 
   const nodeRef = useRef<{ initialized: boolean; markup: ReactNode }>({
     initialized: false,
@@ -21,7 +21,7 @@ function _StableItemComponent<T>({
   if (nodeRef.current.initialized === false) {
     nodeRef.current = {
       initialized: true,
-      markup: children(itemState),
+      markup: children(item$),
     };
   }
 

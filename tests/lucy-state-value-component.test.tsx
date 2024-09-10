@@ -9,16 +9,14 @@ describe("<state$.Value />", () => {
     const user = userEvent.setup();
     let newValue = "Updated value";
     function Component() {
-      const state$ = useLucyState("Default value");
+      const [state$, setState] = useLucyState("Default value");
 
       return (
         <div>
           <h1>
             <state$.Value />
           </h1>
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
         </div>
       );
     }
@@ -39,16 +37,14 @@ describe("<state$.Value />", () => {
     const user = userEvent.setup();
     let newValue = 20;
     function Component() {
-      const state$ = useLucyState(10);
+      const [state$, setState] = useLucyState(10);
 
       return (
         <div>
           <h1>
             State value is: <state$.Value />
           </h1>
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
         </div>
       );
     }
@@ -69,7 +65,7 @@ describe("<state$.Value />", () => {
     const user = userEvent.setup();
     let newValue = 15;
     function Component() {
-      const state$ = useLucyState(5);
+      const [state$, setState] = useLucyState(5);
 
       return (
         <div>
@@ -77,9 +73,7 @@ describe("<state$.Value />", () => {
             {(value) => <h1>State value is: {value}</h1>}
           </state$.Value>
 
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
         </div>
       );
     }
@@ -103,7 +97,7 @@ describe("<state$.Value />", () => {
       textValue: "New value",
     };
     function Component() {
-      const state$ = useLucyState({
+      const [state$, setState] = useLucyState({
         value: 9,
         textValue: "Initial value",
       });
@@ -114,9 +108,7 @@ describe("<state$.Value />", () => {
             {(value) => <h1>State value is: {value}</h1>}
           </state$.Value>
 
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
         </div>
       );
     }
@@ -146,7 +138,7 @@ describe("<state$.Value />", () => {
       return <h1>State value is: {value}</h1>;
     }
     function Component() {
-      const state$ = useLucyState({
+      const [state$, setState] = useLucyState({
         value: 2,
         textValue: "Initial value",
       });
@@ -157,9 +149,7 @@ describe("<state$.Value />", () => {
             {(value) => <Content value={value} />}
           </state$.Value>
 
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
         </div>
       );
     }
@@ -191,7 +181,7 @@ describe("<state$.Value />", () => {
   it("works with input components as expected", async () => {
     const user = userEvent.setup();
     function Component() {
-      const value$ = useLucyState("");
+      const [value$, setValue] = useLucyState("");
 
       return (
         <div>
@@ -201,7 +191,7 @@ describe("<state$.Value />", () => {
                 type="text"
                 aria-label="valueInput"
                 value={value}
-                onChange={(e) => value$.setValue(e.target.value)}
+                onChange={(e) => setValue(e.target.value)}
               />
             )}
           </value$.Value>

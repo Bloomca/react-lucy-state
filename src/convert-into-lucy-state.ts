@@ -7,13 +7,13 @@ import type { LucyState } from "./types";
 // same data structure, it won't give you performance benefits,
 // because it will cause cascade re-renders
 export function useConvertToLucyState<T>(property: T) {
-  const state = useLucyState(property);
+  const [state$, setState] = useLucyState(property);
 
   useEffect(() => {
-    state.setValue(property);
-  }, [property, state]);
+    setState(property);
+  }, [property, setState]);
 
-  return state;
+  return state$;
 }
 
 export function useConvertLucyStateToProperty<T>(lucyState: LucyState<T>) {

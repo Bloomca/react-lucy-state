@@ -30,7 +30,13 @@ describe("Lucy State lists", () => {
       );
     }
     function Component() {
-      const tasks$ = useLucyState([task1, task2, task3, task4, task5]);
+      const [tasks$, setTasks] = useLucyState([
+        task1,
+        task2,
+        task3,
+        task4,
+        task5,
+      ]);
 
       return (
         <div>
@@ -49,9 +55,7 @@ describe("Lucy State lists", () => {
               }
             </tasks$.Value>
           </ul>
-          <button onClick={() => tasks$.setValue(newTasks)}>
-            Change tasks
-          </button>
+          <button onClick={() => setTasks(newTasks)}>Change tasks</button>
         </div>
       );
     }
@@ -96,7 +100,13 @@ describe("Lucy State lists", () => {
       );
     }
     function Component() {
-      const tasks$ = useLucyState([task1, task2, task3, task4, task5]);
+      const [tasks$, setTasks] = useLucyState([
+        task1,
+        task2,
+        task3,
+        task4,
+        task5,
+      ]);
 
       return (
         <div>
@@ -111,9 +121,7 @@ describe("Lucy State lists", () => {
               }
             </tasks$.Value>
           </ul>
-          <button onClick={() => tasks$.setValue(newTasks)}>
-            Change tasks
-          </button>
+          <button onClick={() => setTasks(newTasks)}>Change tasks</button>
         </div>
       );
     }
@@ -158,7 +166,13 @@ describe("Lucy State lists", () => {
       );
     }
     function Component() {
-      const tasks$ = useLucyState([task1, task2, task3, task4, task5]);
+      const [tasks$, setTasks] = useLucyState([
+        task1,
+        task2,
+        task3,
+        task4,
+        task5,
+      ]);
 
       return (
         <div>
@@ -177,9 +191,7 @@ describe("Lucy State lists", () => {
               }
             </tasks$.Value>
           </ul>
-          <button onClick={() => tasks$.setValue(newTasks)}>
-            Change tasks
-          </button>
+          <button onClick={() => setTasks(newTasks)}>Change tasks</button>
         </div>
       );
     }
@@ -231,7 +243,13 @@ describe("Lucy State lists", () => {
       );
     }
     function Component() {
-      const tasks$ = useLucyState([task1, task2, task3, task4, task5]);
+      const [tasks$, setTasks] = useLucyState([
+        task1,
+        task2,
+        task3,
+        task4,
+        task5,
+      ]);
 
       return (
         <div>
@@ -252,9 +270,7 @@ describe("Lucy State lists", () => {
               }
             </tasks$.Value>
           </ul>
-          <button onClick={() => tasks$.setValue(newTasks)}>
-            Change tasks
-          </button>
+          <button onClick={() => setTasks(newTasks)}>Change tasks</button>
         </div>
       );
     }

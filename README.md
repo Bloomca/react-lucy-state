@@ -16,7 +16,7 @@ Let's see a simple example, a value from input saved to a variable and reflected
 import { useLucyState } from "react-lucy-state";
 
 function MyComponent() {
-  const inputValue$ = useLucyState("");
+  const [inputValue$, setInputValue] = useLucyState("");
 
   return (
     <div>
@@ -25,7 +25,7 @@ function MyComponent() {
           <input
             type="text"
             value={value}
-            onChange={(e) => inputValue$.setValue(e.target.value)}
+            onChange={(e) => setInputValue(e.target.value)}
           />
         )}
       </inputValue$.Value>
@@ -107,7 +107,7 @@ import {
 } from "react-lucy-state";
 
 function Component() {
-  const input$ = useLucyState("");
+  const [input$, setInput] = useLucyState("");
   // we check if the value contains only numbers
   const hasError$ = useSelect$(input$, (value) => !value.match(/^[0-9]+$/i));
 
@@ -128,7 +128,7 @@ function Component() {
           <input
             type="text"
             value={value}
-            onChange={(e) => input$.setValue(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
           />
         )}
       </input$.Value>
@@ -145,7 +145,7 @@ LucyState provides a `useTrackValue` and `useTrackValueSelector` methods, which 
 import { useLucyState } from "react-lucy-state";
 
 function Component() {
-  const counter$ = useLucyState(0);
+  const [counter$, setCounter] = useLucyState(0);
 
   counter$.useTrackValue((counterValue) => {
     console.log(`counter value is ${counterValue}`);
@@ -153,7 +153,7 @@ function Component() {
 
   return (
     <div>
-      <button onClick={() => counter$.setValue((value) => value + 1)}>
+      <button onClick={() => setCounter((value) => value + 1)}>
         Increment counter
       </button>
     </div>
@@ -167,8 +167,8 @@ Similar to `React.useEffect`, you can return a function, which will be executed 
 import { useLucyState, useCombine$ } from "react-lucy-state";
 
 function Component() {
-  const firstCounter$ = useLucyState(0);
-  const secondCounter$ = useLucyState(0);
+  const [firstCounter$, setFirstCounter] = useLucyState(0);
+  const [secondCounter$, setSecondCounter] = useLucyState(0);
 
   const combinedCounter$ = useCombine$(firstCounter$, secondCounter$);
   combinedCounter$.useTrackValue(([firstValue, secondValue]) => {
@@ -177,14 +177,10 @@ function Component() {
 
   return (
     <div>
-      <button
-        onClick={() => firstCounter$.setValue(firstCounter$.getValue() + 1)}
-      >
+      <button onClick={() => setFirstCounter(firstCounter$.getValue() + 1)}>
         Increment first counter
       </button>
-      <button
-        onClick={() => secondCounter$.setValue(secondCounter$.getValue() + 1)}
-      >
+      <button onClick={() => setSecondCounter(secondCounter$.getValue() + 1)}>
         Increment second counter
       </button>
     </div>
@@ -198,11 +194,11 @@ You can switch back and forth between regular props and Lucy state, but you shou
 
 ```jsx
 function Component() {
-  const value$ = useLucyState(0);
+  const [value$, setValue] = useLucyState(0);
 
   return (
     <div>
-      <button onClick={() => value$.setValue((value) => value + 1)}>
+      <button onClick={() => setValue((value) => value + 1)}>
         Increment value
       </button>
       <Content value$={value$} />

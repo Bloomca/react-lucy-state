@@ -16,13 +16,11 @@ describe("<UnstableComponent />", () => {
       return <h1>{value}</h1>;
     }
     function Component() {
-      const state$ = useLucyState("first value");
+      const [state$, setState] = useLucyState("first value");
 
       return (
         <div>
-          <button onClick={() => state$.setValue(newValue)}>
-            Change value
-          </button>
+          <button onClick={() => setState(newValue)}>Change value</button>
           <UnstableComponent items$={[state$]}>
             {(items) => <Content value={items[0]} />}
           </UnstableComponent>
@@ -65,17 +63,15 @@ describe("<UnstableComponent />", () => {
       return <h1 aria-label={label}>{`name is ${name}, and age is ${age}`}</h1>;
     }
     function Component() {
-      const name$ = useLucyState("Initial name");
-      const age$ = useLucyState(25);
-      const label$ = useLucyState("credentials");
+      const [name$, setName] = useLucyState("Initial name");
+      const [age$, setAge] = useLucyState(25);
+      const [label$, setLabel] = useLucyState("credentials");
 
       return (
         <div>
-          <button onClick={() => name$.setValue(newName)}>Change name</button>
-          <button onClick={() => age$.setValue(newAge)}>Change age</button>
-          <button onClick={() => label$.setValue(newLabel)}>
-            Change label
-          </button>
+          <button onClick={() => setName(newName)}>Change name</button>
+          <button onClick={() => setAge(newAge)}>Change age</button>
+          <button onClick={() => setLabel(newLabel)}>Change label</button>
           <UnstableComponent items$={[name$, age$, label$]}>
             {([name, age, label]) => {
               return <Content name={name} age={age} label={label} />;

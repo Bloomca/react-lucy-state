@@ -10,16 +10,14 @@ describe("useLucyState", () => {
   it("state works as expected", async () => {
     const user = userEvent.setup();
     function Component() {
-      const state$ = useLucyState("Initial Value");
+      const [state$, setState] = useLucyState("Initial Value");
       return (
         <div>
           <h1>
             <state$.Value />
           </h1>
-          <button onClick={() => state$.setValue("First Value")}>
-            First button
-          </button>
-          <button onClick={() => state$.setValue("Second Value")}>
+          <button onClick={() => setState("First Value")}>First button</button>
+          <button onClick={() => setState("Second Value")}>
             Second button
           </button>
         </div>
@@ -39,7 +37,7 @@ describe("useLucyState", () => {
     const spy = jest.fn();
     const user = userEvent.setup();
     function Component() {
-      const state$ = useLucyState("Initial Value");
+      const [state$, setState] = useLucyState("Initial Value");
       useEffect(() => {
         spy();
       });
@@ -48,10 +46,8 @@ describe("useLucyState", () => {
           <h1>
             <state$.Value />
           </h1>
-          <button onClick={() => state$.setValue("First Value")}>
-            First button
-          </button>
-          <button onClick={() => state$.setValue("Second Value")}>
+          <button onClick={() => setState("First Value")}>First button</button>
+          <button onClick={() => setState("Second Value")}>
             Second button
           </button>
         </div>

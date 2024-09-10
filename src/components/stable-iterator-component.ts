@@ -16,8 +16,8 @@ function _StableIteratorComponent<T>({
     indexState: LucyState<number>
   ) => ReactNode;
 }) {
-  const itemState = useConvertToLucyState(item);
-  const indexState = useConvertToLucyState(index);
+  const item$ = useConvertToLucyState(item);
+  const index$ = useConvertToLucyState(index);
 
   const nodeRef = useRef<{ initialized: boolean; markup: ReactNode }>({
     initialized: false,
@@ -27,7 +27,7 @@ function _StableIteratorComponent<T>({
   if (nodeRef.current.initialized === false) {
     nodeRef.current = {
       initialized: true,
-      markup: children(itemState, indexState),
+      markup: children(item$, index$),
     };
   }
 

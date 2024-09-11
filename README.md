@@ -45,7 +45,7 @@ function MyComponent() {
       <p>
         Current value is: <inputValue$.Value />
       </p>
-      <SomeExpensiveComponent />
+      <SomeExpensiveComponent value$={inputValue$} />
     </div>
   );
 }
@@ -56,7 +56,7 @@ This example will work as you expect if you used regular `React.useState`, but `
 - `<input />` on each update, and only because we need to update an attribute
 - text node which shows the current value
 
-That's it, nothing else will be updated. An important part is that `<SomeExpensiveComponent />` won't be re-rendered as well. While it is possible to avoid that re-render by either passing it as a child from a parent component, memoizing the component, or exporting the input component into a separate one, with this approach you don't have to, which is increasingly more valuable with more complicated components.
+That's it, nothing else will be updated. An important part is that `<SomeExpensiveComponent />` won't be re-rendered as well, and only if the `value$` is used somewhere to render content, that part will be re-rendered on changes (but not the whole component). If it is used for stuff like hooks, it won't cause any re-renders at all.
 
 ## Additional resources
 

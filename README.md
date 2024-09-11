@@ -58,6 +58,12 @@ This example will work as you expect if you used regular `React.useState`, but `
 
 That's it, nothing else will be updated. An important part is that `<SomeExpensiveComponent />` won't be re-rendered as well. While it is possible to avoid that re-render by either passing it as a child from a parent component, memoizing the component, or exporting the input component into a separate one, with this approach you don't have to, which is increasingly more valuable with more complicated components.
 
+## Additional resources
+
+- [Advanced example](https://bloomca.github.io/react-lucy-state/advanced-example)
+- [API docs](https://bloomca.github.io/react-lucy-state/reference/)
+- [Guides](https://bloomca.github.io/react-lucy-state/recipes/)
+
 ## When can it be useful?
 
 This library aims to simplify performance optimization of very complicated components. If you receive a lot of props and execute a lot of hooks (and it is not easy to isolate them in their own components as well) and the performance solution becomes very brittle, this library should provide a stable foundation where you can minimize the re-rendering effects relatively easily.
